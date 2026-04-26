@@ -693,38 +693,164 @@
     .services-grid { grid-template-columns: 1fr; }
     .process-grid { grid-template-columns: repeat(2, 1fr); }
   }
+
+  /* ---------- Tablet & mobile: stack content, fit viewport ---------- */
   @media (max-width: 900px) {
-    /* When layouts stack vertically, content can no longer fit in 100vh.
-       Drop strict height — allow each screen to grow as tall as content needs. */
+    /* Reduce header height to reclaim viewport space on mobile */
+    :root {
+      --header-h: 96px;
+      --header-h-scrolled: 72px;
+    }
+
+    /* Each section: at least viewport-minus-header tall, can grow if needed.
+       Tight padding so content sits near top — no wasted blank space. */
     .screen {
       height: auto;
-      min-height: 100svh;
-      padding-top: calc(var(--header-h-scrolled) + clamp(40px, 5vh, 64px));
-      padding-bottom: clamp(40px, 5vh, 64px);
+      min-height: calc(100svh - var(--header-h-scrolled));
+      padding-top: clamp(20px, 3vh, 36px);
+      padding-bottom: clamp(20px, 3vh, 36px);
       overflow: visible;
     }
-    .screen-inner { flex: 0 0 auto; min-height: 0; }
-    .hero-inner { grid-template-columns: 1fr; gap: 36px; flex: 0 0 auto; }
-    .about-inner { grid-template-columns: 1fr; gap: 32px; flex: 0 0 auto; }
-    .about-photo {
-      aspect-ratio: 16/10;
-      max-height: 50vh;
+    #home.screen {
       height: auto;
+      min-height: 100svh;
+      padding-top: calc(var(--header-h) + 16px);
+      padding-bottom: 32px;
     }
-    .contact-inner { grid-template-columns: 1fr; gap: 32px; }
-    .field-row { grid-template-columns: 1fr; }
+
+    /* Center inner content within the section */
+    .screen-inner { flex: 0 0 auto; min-height: 0; }
+
+    /* Header smaller on mobile */
     .logo img { height: 64px; }
     .site-header.is-scrolled .logo img { height: 52px; }
+
+    /* HERO — stack, tighter spacing */
+    .hero-inner { grid-template-columns: 1fr; gap: 28px; flex: 0 0 auto; }
+    .hero-eyebrow { margin-bottom: 16px; }
+    .hero-headline { font-size: clamp(40px, 9vw, 56px); margin-bottom: 18px; }
+    .hero-lede { font-size: 16px; margin-bottom: 22px; }
+    .hero-meta-item { padding: 14px 0; grid-template-columns: 96px 1fr; gap: 14px; }
+    .hero-meta-item .k { font-size: 9px; letter-spacing: 0.32em; }
+    .hero-meta-item .v { font-size: 15px; }
+
+    /* ABOUT — stack with smaller photo */
+    .about-inner { grid-template-columns: 1fr; gap: 24px; flex: 0 0 auto; }
+    .about-text { order: 2; }
+    .about-photo {
+      order: 1;
+      aspect-ratio: 16/11;
+      max-height: 36vh;
+      height: auto;
+      width: 100%;
+    }
+    .about-text h2 { font-size: 34px; margin-bottom: 16px; }
+    .about-text p { font-size: 15px; line-height: 1.6; margin-bottom: 0.8em; }
+    .about-text p:first-of-type::first-letter {
+      font-size: 3.4em;
+      margin: 0.05em 0.1em 0 -0.02em;
+    }
+    .about-text .signoff { margin-top: 12px; font-size: 17px; }
+
+    /* SERVICES — tight stacking; hide process strip (secondary on mobile) */
+    .services-head { margin-bottom: 22px; }
+    .services-head h2 { font-size: clamp(34px, 8vw, 44px); margin-bottom: 10px; }
+    .services-head p { font-size: 15px; }
+    .services-grid {
+      grid-template-columns: 1fr;
+      gap: 18px;
+      margin-bottom: 0;
+    }
+    .service-card { padding-top: 14px; }
+    .service-card .num { font-size: 14px; margin-bottom: 8px; }
+    .service-card h3 { font-size: 22px; margin-bottom: 8px; }
+    .service-card p { font-size: 14px; line-height: 1.5; }
+    .process-strip { display: none; }
+
+    /* CONTACT — stack, tight; iOS-safe form font sizes */
+    .contact-inner { grid-template-columns: 1fr; gap: 24px; flex: 0 0 auto; }
+    .contact-side h2 { font-size: clamp(32px, 8vw, 40px); margin-bottom: 12px; }
+    .contact-side p { font-size: 15px; margin-bottom: 18px; }
+    .contact-meta { padding-top: 14px; }
+    .contact-meta-row {
+      padding: 7px 0;
+      grid-template-columns: 80px 1fr;
+      gap: 12px;
+      font-size: 14px;
+    }
+    .contact-meta-row .k { font-size: 9px; letter-spacing: 0.28em; }
+    .contact-meta-row .muted { font-size: 12px; }
+    form.contact-form { gap: 16px; }
+    .field-row { grid-template-columns: 1fr; gap: 16px; }
+    .field label { font-size: 9px; letter-spacing: 0.32em; }
+    /* font-size 16px on inputs prevents iOS Safari from zooming on focus */
+    .field input,
+    .field select,
+    .field textarea {
+      font-size: 16px;
+      padding: 7px 0;
+    }
+    .field textarea { font-family: var(--serif-body); }
+    button.cta-submit { padding: 14px 24px; font-size: 11px; }
+    .submit-row { gap: 12px; }
+    .submit-note { font-size: 13px; }
+
+    /* Footer */
+    footer.site-foot {
+      padding: 32px var(--gut) 20px;
+    }
+    .foot-signature .signature-mark {
+      width: clamp(180px, 50vw, 240px);
+    }
   }
+
+  /* ---------- Small phones (iPhone SE, narrow Androids) ---------- */
   @media (max-width: 560px) {
-    .process-grid { grid-template-columns: 1fr; }
-    .logo img { height: 52px; }
+    .logo img { height: 56px; }
     .site-header.is-scrolled .logo img { height: 44px; }
-    .hero-meta-item { grid-template-columns: 1fr; gap: 4px; }
+    .nav a { font-size: 9px; letter-spacing: 0.18em; }
+    .nav { gap: 12px; }
+
+    /* Even tighter on tiny screens */
+    .hero-headline { font-size: clamp(34px, 9vw, 42px); }
+    .hero-lede { font-size: 15px; }
+    .hero-meta-item { grid-template-columns: 80px 1fr; gap: 10px; padding: 12px 0; }
+    .hero-meta-item .v { font-size: 14px; }
+
+    .about-text h2 { font-size: 30px; }
+    .about-text p { font-size: 14px; }
+
+    .services-head h2 { font-size: 32px; }
+    .service-card h3 { font-size: 20px; }
+
+    /* Contact: maximally compact for tiny screens */
+    .screen { padding-top: 16px; padding-bottom: 16px; }
+    .contact-inner { gap: 16px; }
+    .contact-side h2 { font-size: 28px; margin-bottom: 8px; }
+    .contact-side p { font-size: 14px; margin-bottom: 12px; }
+    .contact-meta { padding-top: 10px; }
+    .contact-meta-row {
+      grid-template-columns: 64px 1fr;
+      gap: 10px;
+      font-size: 13px;
+      padding: 5px 0;
+    }
+    .contact-meta-row .k { font-size: 9px; padding-top: 3px; }
+    /* Hide the "Response within 3-5 days" row — it's already implied by the lede */
+    .contact-meta-row.dim-on-mobile { display: none; }
+    form.contact-form { gap: 12px; }
+    .field { gap: 4px; }
+    .field-row { gap: 12px; }
+    .field input,
+    .field select,
+    .field textarea { padding: 5px 0; }
+    .field textarea { rows: 2; }
+    button.cta-submit { padding: 12px 22px; }
   }
+
   /* Very short windows (laptops with browser chrome) — let everything fit */
   @media (max-height: 720px) and (min-width: 901px) {
-    .screen { padding-top: calc(var(--header-h-scrolled) + 16px); padding-bottom: 16px; }
+    .screen { padding-top: clamp(16px, 2vh, 28px); padding-bottom: clamp(16px, 2vh, 28px); }
     #home.screen { padding-top: calc(var(--header-h) + 8px); }
     .hero-headline { font-size: clamp(36px, 5vw, 64px); }
     .about-text h2, .contact-side h2 { font-size: clamp(28px, 3.6vw, 44px); }
@@ -863,14 +989,16 @@
       <h2>Let's <em>talk.</em></h2>
       <p>A small practice. A limited number of projects each year. Tell us a little about the home.</p>
       <div class="contact-meta">
-        <div class="contact-meta-row"><div class="k">Email</div><div><a href="mailto:adrian@dakinerestoration.com">adrian@dakinerestoration.com</a></div></div>
+        <div class="contact-meta-row"><div class="k">Email</div><div><a href="mailto:adrian.dady@gmail.com">adrian.dady@gmail.com</a></div></div>
         <div class="contact-meta-row"><div class="k">Phone</div><div><a href="tel:+18082300725">+1 (808) 230-0725</a> <span class="muted">· call or text</span></div></div>
         <div class="contact-meta-row"><div class="k">Region</div><div>Pacific Northwest</div></div>
-        <div class="contact-meta-row"><div class="k">Response</div><div>Within 3–5 days</div></div>
+        <div class="contact-meta-row dim-on-mobile"><div class="k">Response</div><div>Within 3–5 days</div></div>
       </div>
     </aside>
 
-    <form class="contact-form" onsubmit="event.preventDefault(); document.getElementById('formNote').textContent='Thank you. We will be in touch.'; this.reset();">
+    <form id="contactForm" class="contact-form"
+          action="https://formspree.io/f/YOUR_FORM_ID"
+          method="POST">
       <div class="field-row">
         <div class="field">
           <label for="name">Name</label>
@@ -897,9 +1025,13 @@
         <label for="notes">A few words about the home</label>
         <textarea id="notes" name="notes" rows="3" placeholder="What drew you to it. How you want to live there."></textarea>
       </div>
+      <!-- Honeypot for spam bots — hidden from real users -->
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" aria-hidden="true" />
+      <!-- Subject line shown in the email Adrian receives -->
+      <input type="hidden" name="_subject" value="New inquiry — Da Kine Restoration" />
       <div class="submit-row">
-        <button type="submit" class="cta-submit">
-          <span>Send Inquiry</span>
+        <button type="submit" class="cta-submit" id="submitBtn">
+          <span id="submitLabel">Send Inquiry</span>
           <span class="arrow"></span>
         </button>
         <span class="submit-note" id="formNote">We read every note.</span>
@@ -946,6 +1078,66 @@
   onScroll();
 
   document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // ---------- Contact form: Formspree submission ----------
+  const form = document.getElementById('contactForm');
+  const formNote = document.getElementById('formNote');
+  const submitBtn = document.getElementById('submitBtn');
+  const submitLabel = document.getElementById('submitLabel');
+
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Disable button + show loading state
+      submitBtn.disabled = true;
+      submitBtn.style.opacity = '0.6';
+      submitBtn.style.cursor = 'wait';
+      const originalLabel = submitLabel.textContent;
+      submitLabel.textContent = 'Sending…';
+      formNote.textContent = '';
+      formNote.style.color = '';
+
+      try {
+        const data = new FormData(form);
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (res.ok) {
+          form.reset();
+          formNote.textContent = 'Thank you. We will be in touch within 3–5 days.';
+          submitLabel.textContent = 'Sent';
+          // Re-enable after a moment so they can send another if they want
+          setTimeout(() => {
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = '';
+            submitBtn.style.cursor = '';
+            submitLabel.textContent = originalLabel;
+          }, 4000);
+        } else {
+          const json = await res.json().catch(() => ({}));
+          const msg = json?.errors?.[0]?.message || 'Something went wrong. Please email us directly.';
+          formNote.textContent = msg;
+          formNote.style.color = '#8B2A24';
+          submitBtn.disabled = false;
+          submitBtn.style.opacity = '';
+          submitBtn.style.cursor = '';
+          submitLabel.textContent = originalLabel;
+        }
+      } catch (err) {
+        // Network error or Formspree unreachable
+        formNote.textContent = 'Could not send. Please email adrian.dady@gmail.com directly.';
+        formNote.style.color = '#8B2A24';
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = '';
+        submitBtn.style.cursor = '';
+        submitLabel.textContent = originalLabel;
+      }
+    });
+  }
 </script>
 
 </body>
